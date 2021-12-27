@@ -88,14 +88,14 @@ class scoreCard():
         return score_sheet[roll_number + displacement]
     
     ### future score evaluations ###
-    def sumSpareScoreFuture(self):
-        self.incrementTotalScore(10 - int(self.getCurrentRollScore()))
+    # def sumSpareScoreFuture(self):
+    #     self.incrementTotalScore(10 - int(self.getCurrentRollScore()))
 
     def processFutureScore(self, score):
         if score is self.STRIKE:
             self.sumStrikeScore()
-        elif score is self.SPARE:
-            self.sumSpareScoreFuture()
+        # elif score is self.SPARE:
+        #     self.sumSpareScoreFuture()
         elif score.isnumerical():
             self.sumNormalScore()
         else: pass
