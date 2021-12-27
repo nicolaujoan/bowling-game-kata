@@ -18,6 +18,13 @@ class scoreCard():
         self.previous_roll_score = ''
         self.total_score = 0
         self.is_last_frame = False
+
+    ### SCORE SHEET GETTER AND SETTER ###
+    def getScoreSheet(self):
+        return self.score_sheet
+    
+    def setScoreSheet(self, score_sheet):
+        self.score_sheet = score_sheet
     
 
         
