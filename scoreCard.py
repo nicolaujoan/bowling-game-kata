@@ -22,6 +22,19 @@ class scoreCard():
     
     def setScoreSheet(self, score_sheet):
         self.score_sheet = score_sheet
+
+     ### PLAYS (jugadas) ###
+    def isStrike(self):
+        return self.current_roll_score is self.STRIKE
+    
+    def isSpare(self):
+        return self.current_roll_score is self.SPARE
+    
+    def noPinsBowled(self):
+        return self.current_roll_score is self.NO_PINS_BOWLED
+    
+    def pinsBowled(self):
+        return self.current_roll_score.isnumeric()
     
 
         
