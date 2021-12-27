@@ -62,4 +62,10 @@ class scoreCard():
     ### ROLL NUMBER METHODS ###
     def incrementRollNumber(self, increment):
         self.number_of_roll += increment
-        
+    
+    ### LAST FRAME METHODS ### 
+    def lastFrameOn(self):
+        self.is_last_frame = True
+    
+    def isLastFrame(self):
+        return self.is_last_frame
