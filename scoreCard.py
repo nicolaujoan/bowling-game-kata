@@ -22,6 +22,13 @@ class scoreCard():
     
     def setScoreSheet(self, score_sheet):
         self.score_sheet = score_sheet
+    
+    ### USEFUL GETTERS ###
+    def getCurrentRollScore(self):
+        return self.current_roll_score
+    
+    def getPreviousRollScore(self):
+        return self.previous_roll_score
 
      ### PLAYS (jugadas) ###
     def isStrike(self):
@@ -35,6 +42,7 @@ class scoreCard():
     
     def pinsBowled(self):
         return self.current_roll_score.isnumeric()
+    
     
 
         
