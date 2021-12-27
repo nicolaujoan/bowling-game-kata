@@ -43,6 +43,16 @@ class scoreCard():
     def pinsBowled(self):
         return self.current_roll_score.isnumeric()
     
+    ### SCORE CALCULATION ### 
+    def sumStrikeScore(self):
+            self.final_score += 10
+        
+    def sumNormalScore(self):
+            self.final_score += int(self.current_roll_score)
     
-
+    def sumSpareScore(self):
+        self.final_score += 10 - int(self.previous_roll_score)
+    
+    def getTotalScore(self):
+        return self.total_score
         
