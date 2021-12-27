@@ -59,4 +59,7 @@ class scoreCard():
     def sumSpareScore(self):
          self.incrementTotalScore(int(self.getPreviousRollScore()))
     
+    ### ROLL NUMBER METHODS ###
+    def incrementRollNumber(self, increment):
+        self.number_of_roll += increment
         
