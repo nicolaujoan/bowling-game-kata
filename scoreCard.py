@@ -11,7 +11,7 @@ class scoreCard():
     def __init__(self, score_sheet='') -> None:
         self.score_sheet = score_sheet  
         self.number_of_roll = 1
-        self.current_roll_score = score_sheet[0]
+        self.current_roll_score = ''
         self.previous_roll_score = ''
         self.total_score = 0
         self.is_last_frame = False
@@ -29,30 +29,34 @@ class scoreCard():
     
     def getPreviousRollScore(self):
         return self.previous_roll_score
-
-     ### PLAYS (jugadas) ###
-    def isStrike(self):
-        return self.current_roll_score is self.STRIKE
-    
-    def isSpare(self):
-        return self.current_roll_score is self.SPARE
-    
-    def noPinsBowled(self):
-        return self.current_roll_score is self.NO_PINS_BOWLED
-    
-    def pinsBowled(self):
-        return self.current_roll_score.isnumeric()
-    
-    ### SCORE CALCULATION ### 
-    def sumStrikeScore(self):
-            self.final_score += 10
-        
-    def sumNormalScore(self):
-            self.final_score += int(self.current_roll_score)
-    
-    def sumSpareScore(self):
-        self.final_score += 10 - int(self.previous_roll_score)
     
     def getTotalScore(self):
         return self.total_score
+
+     ### PLAYS (jugadas) ###
+    def isStrike(self):
+        return self.getCurrentRollScore() is self.STRIKE
+    
+    def isSpare(self):
+        return self.getCurrentRollScore() is self.SPARE
+    
+    def noPinsBowled(self):
+        return self.getCurrentRollScore() is self.NO_PINS_BOWLED
+    
+    def pinsBowled(self):
+        return self.getCurrentRollScore().isnumeric()
+    
+    ### SCORE CALCULATION ### 
+    def incrementTotalScore(self, increment):
+        self.total_score += increment
+
+    def sumStrikeScore(self):
+        self.incrementTotalScore(10)
+        
+    def sumNormalScore(self):
+        self.incrementTotalScore(int(self.getCurrentRollScore()))
+    
+    def sumSpareScore(self):
+         self.incrementTotalScore(int(self.getPreviousRollScore()))
+    
         
