@@ -137,7 +137,7 @@ class scoreCard():
     
 
     # procesa las jugadas hechas en el último "frame"
-    def processPlayLastFrame(self, score):
+    def processPlayInLastFrame(self, score):
         if self.isStrike(score):
             self.sumStrikeScore()
 
@@ -182,7 +182,7 @@ class scoreCard():
                         self.incrementRollNumber(1)
             
             else:
-                self.processPlayLastFrame(score)
+                self.processPlayInLastFrame(score)
             
             self.setPreviousScore(score)
             
