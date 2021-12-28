@@ -4,178 +4,177 @@ class scoreCard():
     STRIKE = 'X'
     SPARE = '/'
     NO_PINS_BOWLED = '-'
-    BOWLING_SYMBOLS = ['X', '/', '-']
     LAST_FRAME_ROLL = 19
-    TOTAL_ROLLS = 20
+
 
     ### CONSTRUCTOR ###
     def __init__(self, score_sheet='') -> None:
         self.score_sheet = score_sheet  
         self.number_of_roll = 1
-        self.current_roll_score = ''
-        self.previous_roll_score = ''
+        self.previous_score = ''
         self.total_score = 0
         self.is_last_frame = False
 
-    ### SCORE SHEET GETTER AND SETTER ###
+    
+    ### scoresheet ###
     def getScoreSheet(self):
         return self.score_sheet
+
     
     def setScoreSheet(self, score_sheet):
         self.score_sheet = score_sheet
+
     
-    ### USEFUL GETTERS ###
-    def getCurrentRollScore(self):
-        return self.current_roll_score
-    
-    def getPreviousRollScore(self):
-        return self.previous_roll_score
-    
+    ### total score getter ###
     def getTotalScore(self):
         return self.total_score
+
     
+    ### current roll number getter ###
     def getCurrentRollNumber(self):
         return self.number_of_roll
-    
-    ### USEFUL SETTERS ###
-    def setCurrentRollScore(self, roll_score):
-        self.current_roll_score = roll_score
-    
-    def setPreviousRollScore(self, prev_roll_score):
-        self.previous_roll_score = prev_roll_score
 
-     ### PLAYS (jugadas) ###
-    def isStrike(self):
-        return self.getCurrentRollScore() is self.STRIKE
     
-    def isSpare(self):
-        return self.getCurrentRollScore() is self.SPARE
+    ### previous score getter and setter ###
+    def getPreviousScore(self):
+        return self.previous_score
     
-    def noPinsBowled(self):
-        return self.getCurrentRollScore() is self.NO_PINS_BOWLED
+
+    def setPreviousScore(self, score):
+        self.previous_score = score
     
-    def pinsBowled(self):
-        return self.getCurrentRollScore().isnumeric()
-    
-    ### SCORE CALCULATION ### 
+    ### SCORE CALCULATION ###
     def incrementTotalScore(self, increment):
-        self.total_score += int(increment)
+        self.total_score += increment
+
 
     def sumStrikeScore(self):
         self.incrementTotalScore(10)
+
+
+    def sumSpareScore(self, previous_score):
+        self.incrementTotalScore(10 - int(previous_score))
         
-    def sumNormalScore(self):
-        self.incrementTotalScore(int(self.getCurrentRollScore()))
+
+    def sumNormalScore(self, score):
+        self.incrementTotalScore(int(score))
     
-    def sumSpareScore(self):
-         self.incrementTotalScore(10 - int(self.getPreviousRollScore()))
-    
-    ### ROLL NUMBER METHODS ###
+
+    ### roll number acumulator ###
     def incrementRollNumber(self, increment):
         self.number_of_roll += increment
-    
-    ### LAST FRAME METHODS ### 
-    def lastFrameOn(self):
-        self.is_last_frame = True
-    
-    def isLastFrame(self):
-        return self.is_last_frame
-    
-    ### MOVE FORWARD METHODS (for strike and spare plays) ###
-    def getFollowingScore(self, score_sheet, roll_number, displacement):
-        score_sheet = self.getScoreSheet()
-        # roll_number = self.getCurrentRollNumber()
-        return score_sheet[roll_number + displacement]
-    
-    ### future score evaluations ###
-    # def sumSpareScoreFuture(self):
-    #     self.incrementTotalScore(10 - int(self.getCurrentRollScore()))
 
-    def processFutureScore(self, score):
-        if score is self.STRIKE:
+    
+    ### PLAYS (jugadas) ###
+    def isStrike(self, score):
+        return score is self.STRIKE
+            
+    
+    def isSpare(self, score):
+        return score is self.SPARE
+            
+    
+    def pinsBowled(self, score):
+        return score.isnumeric()
+    
+
+    def noPinsBowled(self, score):
+        return score is self.NO_PINS_BOWLED
+
+    
+    # lógica cuando se da el caso de un "STRIKE" (todavía no estamos en el último frame)
+    def processStrike(self, score_sheet, roll):
+        
+        # strike score addition
+        self.sumStrikeScore()
+
+        # first forward case
+        first_forward_score = self.get_forward_score(score_sheet, roll, 1)
+        
+        if self.pinsBowled(first_forward_score):
+            self.sumNormalScore(first_forward_score)
+
+        elif self.isStrike(first_forward_score):
             self.sumStrikeScore()
-        # elif score is self.SPARE:
-        #     self.sumSpareScoreFuture()
-        elif score.isnumerical():
-            self.sumNormalScore()
+
         else: pass
 
-    ### PROCESS ROLLS METHOD (main logic) ###
-    def processRolls(self):
+        # second forward case:
 
-        # reference to the score sheet
+                
+    # lógica cuando se da el caso de un "SPARE" (todavía no estamos en el último frame) 
+    def processSpare(self, score_sheet, roll):
+        
+        # sum actual score
+        self.sumSpareScore(self.getPreviousScore())
+
+        # take forward score:
+        forward_score = self.get_forward_score(score_sheet, roll, 1)
+
+        # evaluate forward score (strike, pins bowled or not pins bowled)
+        if self.pinsBowled(forward_score):
+            self.sumNormalScore(forward_score)
+        
+        elif self.isStrike(forward_score):
+            self.sumStrikeScore()
+        
+        else: pass
+    
+
+    # procesa las jugadas hechas en el último "frame"
+    def processPlayLastFrame(self, score):
+        if self.isStrike(score):
+            self.sumStrikeScore()
+
+        elif self.isSpare(score):
+            self.sumSpareScore(self.getPreviousScore())
+
+        elif self.pinsBowled(score):
+            self.sumNormalScore(score)
+        self.incrementRollNumber(1)
+
+    
+    ### check if we are on last frame ###
+    def isLastFrame(self):
+        return self.getCurrentRollNumber() >= self.LAST_FRAME_ROLL
+    
+
+    ### get forward score method (obtiene las puntuaciones próximas) ###
+    def get_forward_score(self, score_sheet, roll, increment):
+        return score_sheet[roll + increment]
+
+
+    ### main logic (procesa todas las tiradas "rolls" teniendo en cuenta si estamos o no en el último frame) ###
+    def processRolls(self):
         score_sheet = self.getScoreSheet()
         
-        # loop through every roll of the score sheet
         for roll, score in enumerate(score_sheet):
-
-            # actual roll score
-            self.setCurrentRollScore(score)
             
-            # not in last frame
             if not self.isLastFrame():
+                    if self.isStrike(score): 
+                        self.processStrike(score_sheet, roll)
+                        self.incrementRollNumber(2)
 
-                # strike case
-                if self.isStrike():
-                    # get score
-                    self.sumStrikeScore()
-                    # get and increment following scores
-                    first_following_score = self.getFollowingScore(score_sheet, roll, 1)
-                    second_following_score = self.getFollowingScore(score_sheet, roll, 2)
-                    self.processFutureScore(first_following_score)
-                    self.processFutureScore(second_following_score)
-                    # self.incrementTotalScore(first_following_score)
-                    # self.incrementTotalScore(second_following_score)
-                    # increment roll
-                    self.incrementRollNumber(2)
-                
-                # spare case
-                elif self.isSpare():
-                    # get score
-                    self.sumSpareScore()
-                    self.incrementTotalScore(self.getFollowingScore(score_sheet, roll, 1))
-                    # increment roll
-                    self.incrementRollNumber(1)
-                
-                # some pins bowled case
-                elif self.pinsBowled():
-                    # get score
-                    self.sumNormalScore()
-                    # increment roll
-                    self.incrementRollNumber(1)
-                
-                # no pins bowled case
-                elif self.noPinsBowled():
-                    # just increment roll, no score is added
-                    self.incrementRollNumber(1)
-                
-                else: continue
+                    elif self.isSpare(score): 
+                        self.processSpare(score_sheet, roll)
+                        self.incrementRollNumber(1)
 
-            # last frame rolls 
+                    elif self.pinsBowled(score): 
+                        self.sumNormalScore(score)
+                        self.incrementRollNumber(1)
+
+                    else:
+                        self.incrementRollNumber(1)
+            
             else:
-                # strike case
-                if self.isStrike():
-                    self.sumStrikeScore()
-                    self.incrementRollNumber(1)
-                
-                elif self.isSpare():
-                    self.sumSpareScore()
-                    self.incrementRollNumber(1)
-                
-                elif self.pinsBowled():
-                    self.sumNormalScore()
-                    self.incrementRollNumber(1)
+                self.processPlayLastFrame(score)
             
-            # select the previous roll score, useful for the next roll in case of "spare"
-            self.setPreviousRollScore(self.getCurrentRollScore())
+            self.setPreviousScore(score)
             
-            # check if we are in the last roll
-            if self.getCurrentRollNumber() == self.LAST_FRAME_ROLL:
-                self.lastFrameOn()
+            
 
 
-
-
-
+            
+    
 
     
