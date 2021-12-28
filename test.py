@@ -1,7 +1,7 @@
 from scoreCard import *
 
 my_score_card = scoreCard('12345123451234512345')
-joan_score_card = scoreCard('XXXXXXXXXXXX')
+joan_score_card = scoreCard('XXXXXXXXXXXX') # 12 strikes is a “Thanksgiving Turkey”
 mateu_score_card = scoreCard('9-9-9-9-9-9-9-9-9-9-')
 david_score_card = scoreCard('5/5/5/5/5/5/5/5/5/5/5')
 mixed1 = scoreCard('X63--9/5281XX1/X8/')
@@ -9,46 +9,78 @@ mixed2 = scoreCard('81-92/X637-52X-62/X')
 mixed3 = scoreCard('2345XX-98/-/187251')  
 mixed4 = scoreCard('18X7-2/819-XXX6/3')
 mixed5 = scoreCard('-2XXX16427/634/XX6')
+test1 = scoreCard('X9-9-9-9-9-9-9-9-9-')
+test2 = scoreCard('9-9-9-9-9-9-9-9-9-X9-') # two extra final rolls
+test3 = scoreCard('X9-X9-9-9-9-9-9-9-')
+test4 = scoreCard('XX9-9-9-9-9-9-9-9-') # two strikes in a row is a double
+test5 = scoreCard('XXX9-9-9-9-9-9-9-') # three strikes in a row is a triple
+test6 = scoreCard('9-9-9-9-9-9-9-9-9-XXX') # two strikes in extra rolls
+test7 = scoreCard('8/549-XX5/53639/9/X') # spare in extra roll
+test8 = scoreCard('X5/X5/XX5/--5/X5/') # spare in extra roll
 
 
-# just some pins bowled every time, works fine --> 60
 my_score_card.processRolls()
-print(my_score_card.getTotalScore())
+assert my_score_card.getTotalScore() == 60
 
-# 9 and no pins bowled mix, works fine --> 90
 mateu_score_card.processRolls()
-print(mateu_score_card.getTotalScore())
+assert mateu_score_card.getTotalScore() == 90
 
-### strikes case, works fine --> 300
 joan_score_card.processRolls()
-print(joan_score_card.getTotalScore())
+assert joan_score_card.getTotalScore() == 300
 
-### spares case, works fine --> 150
 david_score_card.processRolls()
-print(david_score_card.getTotalScore())
+assert david_score_card.getTotalScore() == 150
 
-### mixed case, works fine --> 140
 mixed1.processRolls()
-print(mixed1.getTotalScore())
+assert mixed1.getTotalScore() == 140
 
-### other mixed case, needs to be --> 122
 mixed2.processRolls()
-print(mixed2.getTotalScore())
+assert mixed2.getTotalScore() == 122
 
-
-### other mmixed case, needs to be --> 107 
 mixed3.processRolls()
-print(mixed3.getTotalScore())
+assert mixed3.getTotalScore() == 107
 
-# it seems it has the same bug
-### other mixed case, needs to be --> 158
 mixed4.processRolls()
-print(mixed4.getTotalScore())
+assert mixed4.getTotalScore() == 158
 
-### other mixed case, needs to be --> 154
-# works fine
 mixed5.processRolls()
-print(mixed5.getTotalScore())
+assert mixed5.getTotalScore() == 154
+
+test1.processRolls()
+assert test1.getTotalScore() == 100
+
+test2.processRolls()
+assert test2.getTotalScore() == 100
+
+test3.processRolls()
+assert test3.getTotalScore() == 110
+
+test4.processRolls()
+assert test4.getTotalScore() == 120
+
+test5.processRolls()
+assert test5.getTotalScore() == 141
+
+test6.processRolls()
+assert test6.getTotalScore() == 111
+
+test7.processRolls()
+assert test7.getTotalScore() == 149
+
+test8.processRolls()
+assert test8.getTotalScore() == 175
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
