@@ -54,7 +54,10 @@ class scoreCard():
 
 
     def sumSpareScore(self, previous_score):
-        self.incrementTotalScore(10 - int(previous_score))
+        if previous_score.isnumeric():
+            self.incrementTotalScore(10 - int(previous_score))
+        else:
+            self.incrementTotalScore(10)
         
 
     def sumNormalScore(self, score):
