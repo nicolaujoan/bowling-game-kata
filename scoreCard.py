@@ -43,6 +43,7 @@ class scoreCard():
     def setPreviousScore(self, score):
         self.previous_score = score
     
+
     ### SCORE CALCULATION ###
     def incrementTotalScore(self, increment):
         self.total_score += increment
@@ -100,7 +101,18 @@ class scoreCard():
         else: pass
 
         # second forward case:
+        second_forward_score = self.get_forward_score(score_sheet, roll, 2)
 
+        if self.pinsBowled(second_forward_score):
+            self.sumNormalScore(second_forward_score)
+        
+        elif self.isStrike(second_forward_score):
+            self.sumStrikeScore()
+        
+        elif self.isSpare(second_forward_score):
+            self.sumSpareScore(first_forward_score)
+        
+        else: pass
                 
     # lógica cuando se da el caso de un "SPARE" (todavía no estamos en el último frame) 
     def processSpare(self, score_sheet, roll):
