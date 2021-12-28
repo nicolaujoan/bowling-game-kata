@@ -146,7 +146,8 @@ class scoreCard():
 
         elif self.pinsBowled(score):
             self.sumNormalScore(score)
-        self.incrementRollNumber(1)
+        
+        else: self.incrementRollNumber(1)
 
     
     ### check if we are on last frame ###
