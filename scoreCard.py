@@ -186,11 +186,4 @@ class scoreCard():
                 self.processPlayInLastFrame(score)
             
             self.setPreviousScore(score)
-            
-            
-
-
-            
-    
-
-    
+                
