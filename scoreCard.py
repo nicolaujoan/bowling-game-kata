@@ -93,7 +93,7 @@ class scoreCard():
         self.sumStrikeScore()
 
         # first forward case
-        first_forward_score = self.get_forward_score(score_sheet, roll, 1)
+        first_forward_score = self.getForwardScore(score_sheet, roll, 1)
         
         if self.pinsBowled(first_forward_score):
             self.sumNormalScore(first_forward_score)
@@ -104,7 +104,7 @@ class scoreCard():
         else: pass
 
         # second forward case:
-        second_forward_score = self.get_forward_score(score_sheet, roll, 2)
+        second_forward_score = self.getForwardScore(score_sheet, roll, 2)
 
         if self.pinsBowled(second_forward_score):
             self.sumNormalScore(second_forward_score)
@@ -124,7 +124,7 @@ class scoreCard():
         self.sumSpareScore(self.getPreviousScore())
 
         # take forward score:
-        forward_score = self.get_forward_score(score_sheet, roll, 1)
+        forward_score = self.getForwardScore(score_sheet, roll, 1)
 
         # evaluate forward score (strike, pins bowled or not pins bowled)
         if self.pinsBowled(forward_score):
@@ -156,7 +156,7 @@ class scoreCard():
     
 
     ### get forward score method (obtiene las puntuaciones próximas) ###
-    def get_forward_score(self, score_sheet, roll, increment):
+    def getForwardScore(self, score_sheet, roll, increment):
         return score_sheet[roll + increment]
 
 
